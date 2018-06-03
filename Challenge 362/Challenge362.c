@@ -1,7 +1,6 @@
 /* This is a program developed to solve Reddit's r/dailyprogrammer challenge 362 which can be found at 
  * https://www.reddit.com/r/dailyprogrammer/comments/8n8tog/20180530_challenge_362_intermediate_route/ */
  
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,6 +10,10 @@
 
 void cwSpiral(char** grid, int topRow, int rightColumn, int bottomRow, int leftColumn);
 void ccwSpiral(char** grid, int topRow, int rightColumn, int bottomRow, int leftColumn);
+int travelDown(char **grid, int row, int column, int bottomRow);
+int travelUp(char **grid, int row, int column, int topRow);
+int travelRight(char **grid, int row, int column, int rightColumn);
+int travelLeft(char **grid, int row, int column, int leftColumn);
 
 int main(int argc, char **argv)
 {
@@ -86,31 +89,14 @@ void cwSpiral(char** grid, int topRow, int rightColumn, int bottomRow, int leftC
 	int row=topRow, column=rightColumn;
 	
 	if (rightColumn > leftColumn && topRow < bottomRow){
+		row=travelDown(grid, row, column, bottomRow);
 		
-		// printing from top right to just before bottom right
-		while(row < bottomRow){
-			printf("%c", grid[row][column]);
-			row++;
-		}
+		column=travelLeft(grid, row, column, leftColumn);
 		
-		// printing from bottom right to just before bottom left
-		while(column > leftColumn){
-			printf("%c", grid[row][column]);
-			column--;
-		}
+		row=travelUp(grid, row, column, topRow);
 		
-		// printing from bottom left to just before top left (if there is still more to print
-		while (row > topRow){
-			printf("%c", grid[row][column]);
-			row--;
-		}
+		column=travelRight(grid, row, column, rightColumn);
 		
-		// printing the top row, completing the cycle of the spiral
-		while(column < rightColumn){
-			printf("%c", grid[row][column]);
-			column++;
-		}
-		// Go to next spiral
 		cwSpiral(grid, topRow+1, rightColumn-1, bottomRow-1, leftColumn+1);
 	}
 	else if (topRow == bottomRow){
@@ -127,39 +113,19 @@ void cwSpiral(char** grid, int topRow, int rightColumn, int bottomRow, int leftC
 	}
 }
 
-
-
 void ccwSpiral(char** grid, int topRow, int rightColumn, int bottomRow, int leftColumn){
 	// Right and left column respectively refer to rightmost and leftmost columns in the cycle.
 	int row=topRow, column=rightColumn;
 		if ((rightColumn > leftColumn) && (topRow < bottomRow)){
 		
-		// printing from top right to just before top left
-		while(column > leftColumn){
-			printf("%c", grid[row][column]);
-			column--;
-		}
+		column=travelLeft(grid, row, column, leftColumn);
 		
-		// printing from top left to just before bottom left
-		while(row < bottomRow){
-			printf("%c", grid[row][column]);
-			row++;
-		}
+		row=travelDown(grid, row, column, bottomRow);
 		
-		// printing from bottom left to just before bottom right
-		while(column < rightColumn){
-			printf("%c", grid[row][column]);
-			column++;
-		}
+		column=travelRight(grid, row, column, rightColumn);
 		
+		row=travelUp(grid, row, column, topRow);
 		
-		// printing right most column, completing the spiral
-		while (row > topRow){
-			printf("%c", grid[row][column]);
-			row--;
-		}
-		
-		// Go to next spiral
 		ccwSpiral(grid, topRow+1, rightColumn-1, bottomRow-1, leftColumn+1);
 	}
 	
@@ -176,4 +142,36 @@ void ccwSpiral(char** grid, int topRow, int rightColumn, int bottomRow, int left
 			row++;
 		}
 	}
+}
+
+int travelDown(char **grid, int row, int column, int bottomRow){
+	while(row < bottomRow){
+		printf("%c", grid[row][column]);
+		row++;
+	}
+	return row;
+}
+
+int travelUp(char **grid, int row, int column, int topRow){
+	while (row > topRow){
+		printf("%c", grid[row][column]);
+		row--;
+	}
+	return row;
+}
+
+int travelRight(char **grid, int row, int column, int rightColumn){
+	while(column < rightColumn){
+		printf("%c", grid[row][column]);
+		column++;
+	}
+	return column;
+}
+
+int travelLeft(char **grid, int row, int column, int leftColumn){
+	while(column > leftColumn){
+		printf("%c", grid[row][column]);
+		column--;
+	}
+	return column;
 }
