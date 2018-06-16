@@ -24,7 +24,7 @@ def followsRule(word):
     
     ei_index = word.rfind('ei')
     # A word that starts with ei is an exception
-    if ei_index == 1:
+    if ei_index == 0:
         return False
     
     # If it passes the first two tests we go through the entire word
