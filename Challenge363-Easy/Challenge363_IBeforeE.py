@@ -16,12 +16,33 @@ def followsRule(word):
     ''' word: a string
         Takes in word and determines if it follows the rule 
     '''
-    ''' Starting from the back we search for i before e'''
     word = word.lower()
+    
+    #A word with 'cie' is automatically an exception
+    if word.find('cie') >= 0:
+        return False
+    
+    ei_index = word.rfind('ei')
+    # A word that starts with ei is an exception
+    if ei_index == 1:
+        return False
+    
+    # If it passes the first two tests we go through the entire word
     valid = True
+    while ei_index > 0 and valid:
+        word_copy = word[:ei_index+1]
+        try:
+            if word_copy[-2] != 'c':
+                valid = False
+                break
+            else:
+                 ei_index = word_copy.rfind('ei')
+        except IndexError:
+            valid = False
+            break    
+    
     ie_index = word.rfind('ie')
-    ''' go through the entire word'''
-    while  ie_index >= 0:
+    while  ie_index >= 0 and valid:
         word_copy = word[:ie_index+1]
         # use word copy because need to check the entire word again later
         try:
@@ -32,20 +53,10 @@ def followsRule(word):
                  ie_index = word_copy.rfind('ie')
         except IndexError:
             break
-        
-    ei_index = word.rfind('ei')
-    while ei_index >= 0:
-        word_copy = word[:ei_index+1]
-        try:
-            if word_copy[-2] != 'c':
-                valid = False
-                break
-            else:
-                 ei_index = word_copy.rfind('ei')
-        except IndexError:
-            valid = False
-            break
+    
     return valid
+
+    
 
 exceptions = 0
 bonus1 = open("bonus1.txt", 'r')
