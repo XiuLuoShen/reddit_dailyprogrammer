@@ -1,6 +1,6 @@
 Challenge can be found at: https://www.reddit.com/r/dailyprogrammer/comments/98ufvz/20180820_challenge_366_easy_word_funnel_1/
 
-NOTE: My attempt at bonus2 is extremely slow and probably shouldn't be run at all, until I find a better solution to fix it.
+Bonus 2 was completed was with advice from u/kjbetz, thank you for your advice!
 
 Challenge:
 Given two strings of letters, determine whether the second can be made from the first by removing one letter. The remaining letters must stay in the same order.
