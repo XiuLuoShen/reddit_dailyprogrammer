@@ -12,7 +12,7 @@ def loadWords():
     file = open('enable1.txt')
     stringList = str(file.read()).split('\n')
     file.close()
-    return stringList
+    return set(stringList)
 
 
 def funnel(string1, string2):
@@ -30,15 +30,16 @@ def funnel(string1, string2):
     return False
 
 
-def bonus1(string):
+def bonus1(string, words):
     """
         Bonus 1: Given a string, find all words from the enable1 word list that can be made by removing one letter from
         the string.
     """
-    funneled = []
-    for i in loadWords():
-        if funnel(string, i):
-            funneled.append(i)
+    funneled = set()
+    for i in range(len(string)):
+        funneled_string = string[:i]+string[i+1:]
+        if funneled_string in words:
+            funneled.add(funneled_string)
     return funneled
 
 
@@ -48,11 +49,12 @@ def bonus2():
     One such input is "boats". There are 28 such inputs in total. Find them all.
     :return: All 28 inputs
     """
-    funnel5 = []
+    funnel5 = {}
     slist = loadWords()
     for string in slist:
         # to have 5 words returned, the length of i must be at least 5
         if len(string) > 4:
-            if len(bonus1(string)) == 5:
-                funnel5.append(string)
+            matches = bonus1(string, slist)
+            if len(matches) >= 5:
+                funnel5[string] = matches
     return funnel5
